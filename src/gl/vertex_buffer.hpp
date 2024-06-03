@@ -53,7 +53,7 @@ public:
     template <typename DataType>
     inline auto buffer_data(std::span<DataType> data, GLenum usage) const noexcept -> void
     {
-        glBufferData(GL_ARRAY_BUFFER, data.size_bytes(), data.data(), usage);
+        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(data.size_bytes()), data.data(), usage);
     }
 
     // bind first!
@@ -61,7 +61,7 @@ public:
     inline auto buffer_data(std::span<DataType, data_size> data,
         GLenum usage) const noexcept -> void
     {
-        glBufferData(GL_ARRAY_BUFFER, data.size_bytes(), data.data(), usage);
+        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(data.size_bytes()), data.data(), usage);
     }
 
     inline auto bind() const noexcept -> void { glBindBuffer(GL_ARRAY_BUFFER, _id); }
