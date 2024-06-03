@@ -39,6 +39,7 @@ add_subdirectory(dependencies/glad)
 add_subdirectory(dependencies/glfw)
 add_subdirectory(dependencies/stb_image)
 
+target_include_directories(example PUBLIC src)
 target_include_directories(example PUBLIC dependencies/Glad/include)
 target_include_directories(example PUBLIC dependencies/GLFW/include)
 target_include_directories(example PUBLIC dependencies/stb_image/include)

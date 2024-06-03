@@ -4,8 +4,10 @@
 #include <iostream>
 #include <string_view>
 
-#include "types.h"
 #include "gl/vertex_array.h"
+#include "gl/vertex_buffer.h"
+#include "gl/index_buffer.h"
+#include "types.h"
 
 static constexpr std::string_view window_title = "Example";
 static constexpr int window_width = 800;
@@ -132,19 +134,20 @@ int main()
     glViewport(0, 0, window_width, window_height);
 
     GLfloat vertices[] = {
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.5f,
-        0.5f,
-        -0.5f,
+        -0.5f, 0.5f,
+         0.5f,  0.5f,
+         0.5f, -0.5f,
+         -0.5f, -0.5f,
     };
 
-    VertexArray VAO;
-    GLuint VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6, vertices, GL_STATIC_DRAW);
+    u16 indices[] = {
+        0, 1, 2,
+        0, 2, 3,
+    };
+
+    VertexArray va;
+    VertexBuffer vb(std::span{ vertices }, GL_STATIC_DRAW);
+    IndexBuffer ib(std::span{ indices }, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
@@ -155,13 +158,12 @@ int main()
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    glDeleteBuffers(1, &VBO);
     glDeleteProgram(shader);
 
     glfwTerminate();
