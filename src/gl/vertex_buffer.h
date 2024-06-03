@@ -46,7 +46,7 @@ public:
     inline auto buffer_data(const void* data, usize data_size,
         GLenum usage) const noexcept -> void
     {
-        glBufferData(GL_ARRAY_BUFFER, data_size, data, usage);
+        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(data_size), data, usage);
     }
 
     // bind first!
