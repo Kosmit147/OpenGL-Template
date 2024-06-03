@@ -6,7 +6,12 @@ class VertexArray
 {
     // TODO: copy / move semantics
 public:
-    explicit inline VertexArray() { glGenVertexArrays(1, &_id); }
+    explicit inline VertexArray()
+    {
+        glGenVertexArrays(1, &_id);
+        bind();
+    }
+
     inline ~VertexArray() { glDeleteVertexArrays(1, &_id); }
 
     inline auto bind() const -> void { glBindVertexArray(_id); }
