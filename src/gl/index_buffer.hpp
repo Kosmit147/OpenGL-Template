@@ -4,7 +4,7 @@
 
 #include <span>
 
-#include "types.h"
+#include "types.hpp"
 
 class IndexBuffer
 {
