@@ -36,6 +36,6 @@ BreakBeforeBinaryOperators: NonAssignment
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Inline
 
-ColumnLimit: 90
+ColumnLimit: 100
 MaxEmptyLinesToKeep: 1
 InsertNewlineAtEOF: true

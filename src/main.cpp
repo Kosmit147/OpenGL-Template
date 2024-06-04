@@ -5,14 +5,22 @@
 #include <span>
 #include <string_view>
 
+#include "gl/index_buffer.hpp"
 #include "gl/vertex_array.hpp"
 #include "gl/vertex_buffer.hpp"
-#include "gl/index_buffer.hpp"
 #include "types.hpp"
+#include "window/gl_window.hpp"
 
 static constexpr std::string_view window_title = "Example";
 static constexpr int window_width = 800;
 static constexpr int window_height = 600;
+
+static constexpr GlWindowHints window_hints = {
+    .gl_context_version_major = 4,
+    .gl_context_version_minor = 3,
+    .gl_profile = GLFW_OPENGL_CORE_PROFILE,
+    .gl_debug_context = true,
+};
 
 static constexpr std::string_view vertex_shader_src = R"(
 #version 430 core
@@ -75,8 +83,7 @@ static auto compile_shader(const char* shader_src, GLenum type) -> GLuint
     return shader;
 }
 
-static auto create_shader(std::string_view vertex_src, std::string_view fragment_src)
-    -> GLuint
+static auto create_shader(std::string_view vertex_src, std::string_view fragment_src) -> GLuint
 {
     GLuint vertex_shader = compile_shader(vertex_src.data(), GL_VERTEX_SHADER);
     verify_shader_compilation(vertex_shader);
@@ -106,23 +113,18 @@ int main()
         return -1;
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+    auto create_window_result =
+        GlWindow::create(window_title, window_width, window_height, &window_hints);
 
-    GLFWwindow* window =
-        glfwCreateWindow(window_width, window_height, window_title.data(), NULL, NULL);
-
-    if (!window)
+    if (!create_window_result)
     {
         std::cerr << "Failed to create a window." << std::endl;
         glfwTerminate();
         return -1;
     }
 
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    auto& window = create_window_result.value();
+    window.set_vsync(true);
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
     {
@@ -132,18 +134,26 @@ int main()
     }
 
     std::cout << glGetString(GL_VERSION) << std::endl;
-    glViewport(0, 0, window_width, window_height);
+    window.fill_viewport();
 
     GLfloat vertices[] = {
-        -0.5f, 0.5f,
-         0.5f,  0.5f,
-         0.5f, -0.5f,
-         -0.5f, -0.5f,
+        -0.5f,
+        0.5f,
+        0.5f,
+        0.5f,
+        0.5f,
+        -0.5f,
+        -0.5f,
+        -0.5f,
     };
 
     GLushort indices[] = {
-        0, 1, 2,
-        0, 2, 3,
+        0,
+        1,
+        2,
+        0,
+        2,
+        3,
     };
 
     VertexArray va;
@@ -155,17 +165,16 @@ int main()
 
     GLuint shader = create_shader(vertex_shader_src, fragment_shader_src);
 
-    while (!glfwWindowShouldClose(window))
+    while (!window.should_close())
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        window.swap_buffers();
+        window.poll_events();
     }
 
     glDeleteProgram(shader);
-
     glfwTerminate();
 }

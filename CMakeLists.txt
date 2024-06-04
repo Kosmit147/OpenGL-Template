@@ -13,6 +13,7 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL On)
 
 set(PROJECT_SOURCES
     src/main.cpp
+    src/window/gl_window.cpp
 )
 
 add_executable(
