@@ -1,6 +1,5 @@
 #include "file_io.hpp"
 
-#include <format>
 #include <fstream>
 
 auto read_from_file(const std::filesystem::path& path) -> std::stringstream

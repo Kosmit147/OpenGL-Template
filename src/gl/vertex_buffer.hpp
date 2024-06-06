@@ -2,10 +2,6 @@
 
 #include <glad/glad.h>
 
-#include <span>
-
-#include "core/types.hpp"
-
 class VertexBuffer
 {
     // TODO: move/copy semantics

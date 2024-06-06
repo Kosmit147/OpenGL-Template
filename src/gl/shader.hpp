@@ -3,9 +3,6 @@
 #include <glad/glad.h>
 
 #include <filesystem>
-#include <stdexcept>
-#include <string_view>
-#include <unordered_map>
 
 class Shader
 {

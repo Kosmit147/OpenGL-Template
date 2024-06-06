@@ -1,8 +1,6 @@
 #pragma once
 
 #include <filesystem>
-#include <sstream>
-#include <stdexcept>
 
 // throws FileIoError
 [[nodiscard]] auto read_from_file(const std::filesystem::path& path) -> std::stringstream;

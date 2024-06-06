@@ -1,12 +1,5 @@
 #include "shader.hpp"
 
-#include <format>
-#include <print>
-#include <sstream>
-#include <utility>
-#include <vector>
-
-#include "core/types.hpp"
 #include "io/file_io.hpp"
 
 static constexpr GLuint invalid_shader_id = 0;

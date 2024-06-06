@@ -3,11 +3,6 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-#include <stdexcept>
-#include <string_view>
-
-#include "core/types.hpp"
-
 struct GlWindowHints
 {
     i32 gl_context_version_major;

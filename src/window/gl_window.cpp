@@ -1,8 +1,5 @@
 #include "gl_window.hpp"
 
-#include <print>
-#include <utility>
-
 static bool glfw_initialized = false;
 static bool glad_loaded = false;
 

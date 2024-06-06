@@ -1,11 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <print>
-#include <span>
-#include <string_view>
-
-#include "core/types.hpp"
 #include "gl/index_buffer.hpp"
 #include "gl/shader.hpp"
 #include "gl/vertex_array.hpp"

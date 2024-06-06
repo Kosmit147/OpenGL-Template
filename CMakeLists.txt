@@ -49,13 +49,15 @@ add_subdirectory(dependencies/glfw)
 add_subdirectory(dependencies/stb_image)
 
 target_include_directories(example PUBLIC src)
-target_include_directories(example PUBLIC dependencies/Glad/include)
-target_include_directories(example PUBLIC dependencies/GLFW/include)
+target_include_directories(example PUBLIC dependencies/glad/include)
+target_include_directories(example PUBLIC dependencies/glfw/include)
 target_include_directories(example PUBLIC dependencies/stb_image/include)
 
 target_link_libraries(example glad)
 target_link_libraries(example glfw)
 target_link_libraries(example stb_image)
+
+target_precompile_headers(example PUBLIC src/pch.h)
 
 set_project_warnings(PROJECT_WARNINGS)
 set_property(TARGET example PROPERTY COMPILE_WARNING_AS_ERROR ON)
