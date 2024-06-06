@@ -17,7 +17,7 @@ u32 GlWindow::_window_count = 0;
     return true;
 }
 
-[[nodiscard]] static inline auto terminate_glfw() -> void
+static inline auto terminate_glfw() -> void
 {
     glfwTerminate();
     glfw_initialized = false;
@@ -52,7 +52,7 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, hints->gl_debug_context);
     }
 
-    _window = glfwCreateWindow(width, height, title.data(), NULL, NULL);
+    _window = glfwCreateWindow(static_cast<int>(width), static_cast<int>(height), title.data(), NULL, NULL);
 
     if (!_window)
     {
@@ -97,21 +97,21 @@ auto GlWindow::size() const noexcept -> GlWindowSize
 {
     int width, height;
     glfwGetWindowSize(_window, &width, &height);
-    return { .width = (u32)width, .height = (u32)height };
+    return { .width = static_cast<u32>(width), .height = static_cast<u32>(height) };
 }
 
 auto GlWindow::width() const noexcept -> u32
 {
     int width, height;
     glfwGetWindowSize(_window, &width, &height);
-    return (u32)width;
+    return static_cast<u32>(width);
 }
 
 auto GlWindow::height() const noexcept -> u32
 {
     int width, height;
     glfwGetWindowSize(_window, &width, &height);
-    return (u32)height;
+    return static_cast<u32>(height);
 }
 
 auto GlWindow::make_context_current() const noexcept -> void
@@ -128,7 +128,7 @@ auto GlWindow::set_vsync(bool enabled) const noexcept -> void
 auto GlWindow::fill_viewport() const noexcept -> void
 {
     auto window_size = size();
-    set_viewport(0, 0, window_size.width, window_size.height);
+    set_viewport(0, 0, static_cast<GLsizei>(window_size.width), static_cast<GLsizei>(window_size.height));
 }
 
 auto GlWindow::set_viewport(GLint x, GLint y, GLsizei width, GLsizei height) const noexcept -> void

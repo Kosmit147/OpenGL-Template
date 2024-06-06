@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "core/types.hpp"
 #include "io/file_io.hpp"
 
 static constexpr GLuint invalid_shader_id = 0;
@@ -89,7 +90,7 @@ auto Shader::compile_shader(GLenum shader_type, std::string_view shader_src) -> 
     {
         GLint log_length = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
-        std::vector<GLchar> error_log(log_length);
+        std::vector<GLchar> error_log(static_cast<usize>(log_length));
         glGetShaderInfoLog(shader, log_length, &log_length, &error_log[0]);
 
         auto message =
@@ -115,7 +116,7 @@ auto Shader::link_shader(GLuint vertex_shader, GLuint fragment_shader) -> GLuint
     {
         GLint log_length = 0;
         glGetProgramiv(shader_program, GL_INFO_LOG_LENGTH, &log_length);
-        std::vector<GLchar> error_log(log_length);
+        std::vector<GLchar> error_log(static_cast<usize>(log_length));
         glGetProgramInfoLog(shader_program, log_length, &log_length, &error_log[0]);
 
         auto message = std::format("Can't link shader: {}", error_log.data());
