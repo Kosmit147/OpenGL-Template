@@ -13,6 +13,8 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL On)
 
 set(PROJECT_SOURCES
     src/main.cpp
+    src/io/file_io.cpp
+    src/gl/shader.cpp
     src/window/gl_window.cpp
 )
 
@@ -20,6 +22,12 @@ add_executable(
     example
     ${PROJECT_SOURCES}
 )
+
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_compile_definitions(_DEBUG)
+elseif(CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "MinSizeRel" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
+    add_compile_definitions(_RELEASE)
+endif()
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "GLFW lib only")
 set(GLFW_INSTALL OFF CACHE BOOL "GLFW lib only")

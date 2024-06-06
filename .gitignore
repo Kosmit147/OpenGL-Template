@@ -37,3 +37,4 @@ out
 
 # Visual Studio
 .vs
+CMakeSettings.json

@@ -4,7 +4,7 @@
 
 #include <span>
 
-#include "types.hpp"
+#include "core/types.hpp"
 
 class VertexBuffer
 {
@@ -23,8 +23,7 @@ public:
         buffer_data(data, data_size, usage);
     }
 
-    template <typename DataType>
-    explicit inline VertexBuffer(std::span<DataType> data, GLenum usage) noexcept
+    template <typename DataType> explicit inline VertexBuffer(std::span<DataType> data, GLenum usage) noexcept
     {
         glGenBuffers(1, &_id);
         bind();
@@ -32,8 +31,7 @@ public:
     }
 
     template <typename DataType, std::size_t data_size>
-    explicit inline VertexBuffer(std::span<DataType, data_size> data,
-        GLenum usage) noexcept
+    explicit inline VertexBuffer(std::span<DataType, data_size> data, GLenum usage) noexcept
     {
         glGenBuffers(1, &_id);
         bind();
@@ -43,8 +41,7 @@ public:
     inline ~VertexBuffer() noexcept { glDeleteBuffers(1, &_id); }
 
     // bind first!
-    inline auto buffer_data(const void* data, usize data_size,
-        GLenum usage) const noexcept -> void
+    inline auto buffer_data(const void* data, usize data_size, GLenum usage) const noexcept -> void
     {
         glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(data_size), data, usage);
     }
@@ -58,8 +55,7 @@ public:
 
     // bind first!
     template <typename DataType, std::size_t data_size>
-    inline auto buffer_data(std::span<DataType, data_size> data,
-        GLenum usage) const noexcept -> void
+    inline auto buffer_data(std::span<DataType, data_size> data, GLenum usage) const noexcept -> void
     {
         glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(data.size_bytes()), data.data(), usage);
     }

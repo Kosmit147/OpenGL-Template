@@ -17,6 +17,6 @@ public:
     inline auto bind() const noexcept -> void { glBindVertexArray(_id); }
     [[nodiscard]] inline auto id() const noexcept -> GLuint { return _id; }
 
-private: 
+private:
     GLuint _id;
 };

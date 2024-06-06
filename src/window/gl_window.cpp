@@ -1,8 +1,49 @@
 #include "gl_window.hpp"
 
-auto GlWindow::create(std::string_view title, u32 width, u32 height,
-    const GlWindowHints* hints) noexcept -> std::optional<GlWindow>
+#include <print>
+#include <utility>
+
+static bool glfw_initialized = false;
+static bool glad_loaded = false;
+
+u32 GlWindow::_window_count = 0;
+
+[[nodiscard]] static inline auto init_glfw() -> bool
 {
+    if (!glfwInit())
+        return false;
+
+    glfw_initialized = true;
+    return true;
+}
+
+[[nodiscard]] static inline auto terminate_glfw() -> void
+{
+    glfwTerminate();
+    glfw_initialized = false;
+    glad_loaded = false;
+}
+
+[[nodiscard]] static inline auto load_glad() -> bool
+{
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+        return false;
+
+    glad_loaded = true;
+    return true;
+}
+
+GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindowHints* hints)
+{
+    if (!glfw_initialized)
+    {
+        if (!init_glfw())
+        {
+            std::println(stderr, "Failed to initialize GLFW.");
+            throw FailedToInitializeGlfw{};
+        }
+    }
+
     if (hints)
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, hints->gl_context_version_major);
@@ -11,15 +52,40 @@ auto GlWindow::create(std::string_view title, u32 width, u32 height,
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, hints->gl_debug_context);
     }
 
-    GLFWwindow* window = glfwCreateWindow(width, height, title.data(), NULL, NULL);
+    _window = glfwCreateWindow(width, height, title.data(), NULL, NULL);
 
-    if (!window)
-        return {};
+    if (!_window)
+    {
+        if (_window_count == 0)
+            terminate_glfw();
 
-    glfwMakeContextCurrent(window);
+        std::println(stderr, "Failed to create a window.");
+        throw FailedToCreateGlWindow{};
+    }
 
-    // have to be explicit with std::optional construction for RVO to work
-    return std::optional<GlWindow>{ GlWindow{ window } };
+    make_context_current();
+
+    if (!glad_loaded)
+    {
+        if (!load_glad())
+        {
+            terminate_glfw();
+            std::println(stderr, "Failed to load GLAD.");
+            throw FailedToLoadGlad{};
+        }
+    }
+
+    fill_viewport();
+    _window_count++;
+}
+
+GlWindow::~GlWindow()
+{
+    glfwDestroyWindow(_window);
+    _window_count--;
+
+    if (_window_count == 0)
+        terminate_glfw();
 }
 
 auto GlWindow::should_close() const noexcept -> bool
@@ -46,6 +112,11 @@ auto GlWindow::height() const noexcept -> u32
     int width, height;
     glfwGetWindowSize(_window, &width, &height);
     return (u32)height;
+}
+
+auto GlWindow::make_context_current() const noexcept -> void
+{
+    glfwMakeContextCurrent(_window);
 }
 
 auto GlWindow::set_vsync(bool enabled) const noexcept -> void

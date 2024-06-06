@@ -24,6 +24,7 @@ BraceWrapping:
   BeforeCatch: true
   BeforeElse: true
   IndentBraces: false
+  SplitEmptyFunction: false
 
 Cpp11BracedListStyle: false
 AccessModifierOffset: -4
@@ -36,6 +37,6 @@ BreakBeforeBinaryOperators: NonAssignment
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Inline
 
-ColumnLimit: 100
+ColumnLimit: 110
 MaxEmptyLinesToKeep: 1
 InsertNewlineAtEOF: true
