@@ -28,7 +28,7 @@ int main()
     GlWindow window(window_title, window_width, window_height, &window_hints);
     window.set_vsync(true);
 
-    std::println("{}", glGetString(GL_VERSION));
+    std::println("{}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
     GLfloat vertices[] = {
         -0.5f,
