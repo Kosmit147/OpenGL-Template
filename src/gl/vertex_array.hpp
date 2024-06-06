@@ -4,7 +4,6 @@
 
 class VertexArray
 {
-    // TODO: copy / move semantics
 public:
     explicit inline VertexArray() noexcept
     {
@@ -13,6 +12,9 @@ public:
     }
 
     inline ~VertexArray() noexcept { glDeleteVertexArrays(1, &_id); }
+
+    VertexArray(const VertexArray& other) = delete;
+    VertexArray(VertexArray&& other) = delete;
 
     inline auto bind() const noexcept -> void { glBindVertexArray(_id); }
     [[nodiscard]] inline auto id() const noexcept -> GLuint { return _id; }

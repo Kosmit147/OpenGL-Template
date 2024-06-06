@@ -6,13 +6,15 @@
 
 class Shader
 {
-    // TODO: copy/move semantics
 public:
     using ShaderPath = std::filesystem::path;
 
     // throws CreateShaderError
-    Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src_path);
+    explicit Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src_path);
     inline ~Shader() noexcept { glDeleteProgram(_id); };
+
+    Shader(const Shader& other) = delete;
+    Shader(Shader&& other) = delete;
 
     inline auto bind() const noexcept -> void { glUseProgram(_id); }
     [[nodiscard]] inline auto id() const noexcept -> GLuint { return _id; }

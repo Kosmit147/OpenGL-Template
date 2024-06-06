@@ -19,7 +19,6 @@ struct GlWindowSize
 
 class GlWindow
 {
-    // TODO: move/copy semantics
 public:
     // throws CreateGlWindowError
     GlWindow(std::string_view title, u32 width, u32 height, const GlWindowHints* hints = nullptr);

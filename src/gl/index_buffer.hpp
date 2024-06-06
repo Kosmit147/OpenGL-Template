@@ -4,7 +4,6 @@
 
 class IndexBuffer
 {
-    // TODO: move/copy semantics
 public:
     explicit inline IndexBuffer() noexcept
     {
@@ -35,6 +34,9 @@ public:
     }
 
     inline ~IndexBuffer() noexcept { glDeleteBuffers(1, &_id); }
+
+    IndexBuffer(const IndexBuffer& other) = delete;
+    IndexBuffer(IndexBuffer&& other) = delete;
 
     // bind first!
     inline auto buffer_data(const void* data, usize data_size, GLenum usage) const noexcept -> void

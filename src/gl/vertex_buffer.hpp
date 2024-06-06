@@ -4,7 +4,6 @@
 
 class VertexBuffer
 {
-    // TODO: move/copy semantics
 public:
     explicit inline VertexBuffer() noexcept
     {
@@ -35,6 +34,9 @@ public:
     }
 
     inline ~VertexBuffer() noexcept { glDeleteBuffers(1, &_id); }
+
+    VertexBuffer(const VertexBuffer& other) = delete;
+    VertexBuffer(VertexBuffer&& other) = delete;
 
     // bind first!
     inline auto buffer_data(const void* data, usize data_size, GLenum usage) const noexcept -> void
