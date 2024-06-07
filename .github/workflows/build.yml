@@ -15,12 +15,12 @@ jobs:
       
       matrix:
         build_type: [Release, Debug]
-        c_compiler: [gcc, clang]
+        c_compiler: [gcc-14, clang-18]
         include:
-          - c_compiler: gcc
-            cpp_compiler: g++
-          - c_compiler: clang
-            cpp_compiler: clang++
+          - c_compiler: gcc-14
+            cpp_compiler: g++-14
+          - c_compiler: clang-18
+            cpp_compiler: clang++-18
 
     steps:
     - name: Install GLFW dev packages
