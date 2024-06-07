@@ -18,14 +18,14 @@ public:
         buffer_data(data, data_size, usage);
     }
 
-    template <typename DataType> explicit inline IndexBuffer(std::span<DataType> data, GLenum usage) noexcept
+    template<typename DataType> explicit inline IndexBuffer(std::span<DataType> data, GLenum usage) noexcept
     {
         glGenBuffers(1, &_id);
         bind();
         buffer_data(data, usage);
     }
 
-    template <typename DataType, std::size_t data_size>
+    template<typename DataType, std::size_t data_size>
     explicit inline IndexBuffer(std::span<DataType, data_size> data, GLenum usage) noexcept
     {
         glGenBuffers(1, &_id);
@@ -45,14 +45,14 @@ public:
     }
 
     // bind first!
-    template <typename DataType>
+    template<typename DataType>
     inline auto buffer_data(std::span<DataType> data, GLenum usage) const noexcept -> void
     {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(data.size_bytes()), data.data(), usage);
     }
 
     // bind first!
-    template <typename DataType, std::size_t data_size>
+    template<typename DataType, std::size_t data_size>
     inline auto buffer_data(std::span<DataType, data_size> data, GLenum usage) const noexcept -> void
     {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(data.size_bytes()), data.data(), usage);

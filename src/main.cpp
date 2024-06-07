@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "core/log.hpp"
 #include "gl/index_buffer.hpp"
 #include "gl/shader.hpp"
 #include "gl/vertex_array.hpp"
@@ -23,7 +24,7 @@ int main()
     GlWindow window(window_title, window_width, window_height, &window_hints);
     window.set_vsync(true);
 
-    std::println("{}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+    log_notification("{}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
     GLfloat vertices[] = {
         -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f,

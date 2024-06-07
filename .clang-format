@@ -31,6 +31,7 @@ AccessModifierOffset: -4
 
 AllowAllArgumentsOnNextLine: false
 BreakBeforeBinaryOperators: NonAssignment
+SpaceAfterTemplateKeyword: false
 
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Inline
