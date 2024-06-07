@@ -17,14 +17,10 @@ jobs:
         build_type: [Release, Debug]
         c_compiler: [gcc, clang]
         include:
-          - c_compiler: gcc
-            cpp_compiler: g++
-            cmake_env_cc: gcc-14
-            cmake_env_cxx: g++-14
-          - c_compiler: clang
-            cpp_compiler: clang++
-            cmake_env_cc: clang-18
-            cmake_env_cxx: clang++-18
+          - c_compiler: gcc-13
+            cpp_compiler: g++-13
+          - c_compiler: clang-17
+            cpp_compiler: clang++-17
 
     steps:
     - name: Install GLFW dev packages
@@ -46,12 +42,11 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DGLFW_BUILD_X11=True
         -S ${{ github.workspace }}
-      env:
-        CC:   ${{ matrix.cmake_env_cc }}
-        CXX:  ${{ matrix.cmake_env_cxx }}
         
 
     - name: Build
