@@ -27,7 +27,8 @@ private:
 private:
     GLuint _id;
 
-    static std::unordered_map<GLenum, const char*> shader_type_to_str;
+    // TODO: simple lookup table or switch function instead of an inefficient unordered_map
+    static std::unordered_map<GLenum, const char*> _shader_type_to_str;
 };
 
 class CreateShaderError : public std::runtime_error

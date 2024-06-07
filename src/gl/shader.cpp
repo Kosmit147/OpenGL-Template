@@ -18,7 +18,7 @@ static auto delete_shader_program_if_invalid(GLuint id) noexcept -> void
         glDeleteProgram(id);
 }
 
-std::unordered_map<GLenum, const char*> Shader::shader_type_to_str = {
+std::unordered_map<GLenum, const char*> Shader::_shader_type_to_str = {
     { GL_VERTEX_SHADER, "vertex" },
     { GL_FRAGMENT_SHADER, "fragment" },
 };
@@ -64,7 +64,7 @@ auto Shader::compile_shader(GLenum shader_type, const ShaderPath& shader_src_pat
     catch (FileIoError& e)
     {
         auto message =
-            std::format("Can't read {} shader source file: {}", shader_type_to_str[shader_type], e.what());
+            std::format("Can't read {} shader source file: {}", _shader_type_to_str[shader_type], e.what());
         log_error("{}", message);
         throw FailedToReadShaderSourceFile{ message };
     }
@@ -88,7 +88,7 @@ auto Shader::compile_shader(GLenum shader_type, std::string_view shader_src) -> 
         glGetShaderInfoLog(shader, log_length, &log_length, &error_log[0]);
 
         auto message =
-            std::format("Can't compile {} shader: {}", shader_type_to_str[shader_type], error_log.data());
+            std::format("Can't compile {} shader: {}", _shader_type_to_str[shader_type], error_log.data());
         log_error("{}", message);
         throw FailedToCompileShader{ message };
     }
