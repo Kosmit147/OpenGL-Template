@@ -27,23 +27,11 @@ int main()
     log_notification("{}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
     GLfloat vertices[] = {
-        -0.5f,
-        0.5f,
-        0.5f,
-        0.5f,
-        0.5f,
-        -0.5f,
-        -0.5f,
-        -0.5f,
+        -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f,
     };
 
     GLushort indices[] = {
-        0,
-        1,
-        2,
-        0,
-        2,
-        3,
+        0, 1, 2, 0, 2, 3,
     };
 
     VertexArray va;
