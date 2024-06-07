@@ -29,9 +29,7 @@ BraceWrapping:
 Cpp11BracedListStyle: false
 AccessModifierOffset: -4
 
-AlignAfterOpenBracket: DontAlign
 AllowAllArgumentsOnNextLine: false
-AlignOperands: DontAlign
 BreakBeforeBinaryOperators: NonAssignment
 
 AllowShortBlocksOnASingleLine: Empty
