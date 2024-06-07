@@ -33,6 +33,7 @@ AlignAfterOpenBracket: DontAlign
 AllowAllArgumentsOnNextLine: false
 AlignOperands: DontAlign
 BreakBeforeBinaryOperators: NonAssignment
+SpaceAfterTemplateKeyword: false
 
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Inline

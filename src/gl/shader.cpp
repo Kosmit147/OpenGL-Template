@@ -1,5 +1,6 @@
 #include "shader.hpp"
 
+#include "core/log.hpp"
 #include "io/file_io.hpp"
 
 static constexpr GLuint invalid_shader_id = 0;
@@ -34,7 +35,7 @@ Shader::Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src
         fragment_shader = compile_shader(GL_FRAGMENT_SHADER, fragment_src_path);
         shader_program = link_shader(vertex_shader, fragment_shader);
     }
-    catch ([[maybe_unused]] CreateShaderError& e)
+    catch (CreateShaderError&)
     {
         delete_shader_if_invalid(vertex_shader);
         delete_shader_if_invalid(fragment_shader);
@@ -64,7 +65,7 @@ auto Shader::compile_shader(GLenum shader_type, const ShaderPath& shader_src_pat
     {
         auto message =
             std::format("Can't read {} shader source file: {}", shader_type_to_str[shader_type], e.what());
-        std::println(stderr, "{}", message);
+        log_error("{}", message);
         throw FailedToReadShaderSourceFile{ message };
     }
 }
@@ -88,7 +89,7 @@ auto Shader::compile_shader(GLenum shader_type, std::string_view shader_src) -> 
 
         auto message =
             std::format("Can't compile {} shader: {}", shader_type_to_str[shader_type], error_log.data());
-        std::println(stderr, "{}", message);
+        log_error("{}", message);
         throw FailedToCompileShader{ message };
     }
 
@@ -113,7 +114,7 @@ auto Shader::link_shader(GLuint vertex_shader, GLuint fragment_shader) -> GLuint
         glGetProgramInfoLog(shader_program, log_length, &log_length, &error_log[0]);
 
         auto message = std::format("Can't link shader: {}", error_log.data());
-        std::println(stderr, "{}", message);
+        log_error("{}", message);
         throw FailedToLinkShader{ message };
     }
 

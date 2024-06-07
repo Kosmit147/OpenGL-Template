@@ -1,5 +1,7 @@
 #include "gl_window.hpp"
 
+#include "core/log.hpp"
+
 static bool glfw_initialized = false;
 static bool glad_loaded = false;
 
@@ -36,7 +38,7 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
     {
         if (!init_glfw())
         {
-            std::println(stderr, "Failed to initialize GLFW.");
+            log_error("Failed to initialize GLFW.");
             throw FailedToInitializeGlfw{};
         }
     }
@@ -56,7 +58,7 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
         if (_window_count == 0)
             terminate_glfw();
 
-        std::println(stderr, "Failed to create a window.");
+        log_error(stderr, "Failed to create a window.");
         throw FailedToCreateGlWindow{};
     }
 
@@ -67,7 +69,7 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
         if (!load_glad())
         {
             terminate_glfw();
-            std::println(stderr, "Failed to load GLAD.");
+            log_error(stderr, "Failed to load GLAD.");
             throw FailedToLoadGlad{};
         }
     }
