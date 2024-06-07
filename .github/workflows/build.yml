@@ -23,10 +23,10 @@ jobs:
             cpp_compiler: clang++
 
     steps:
-    - name: Update gcc and clang
+    - name: Update gcc
       run: |
          sudo apt update
-         sudo apt install gcc-10 g++-10 clang-17 clang++-17
+         sudo apt install gcc-14 g++-14
     
     - name: Install GLFW dev packages
       run: sudo apt install libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-modules libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
