@@ -27,7 +27,6 @@ private:
 private:
     GLuint _id;
 
-    // TODO: simple lookup table or switch function instead of an inefficient unordered_map
     static std::unordered_map<GLenum, const char*> _shader_type_to_str;
 };
 

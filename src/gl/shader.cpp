@@ -41,6 +41,9 @@ Shader::Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src
         delete_shader_if_invalid(fragment_shader);
         delete_shader_program_if_invalid(shader_program);
 
+        log_error("Couldn't create shader from files: {}, {}", vertex_src_path.string(),
+                  fragment_src_path.string());
+
         throw;
     }
 
