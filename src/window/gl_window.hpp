@@ -20,6 +20,8 @@ struct GlWindowSize
 class GlWindow
 {
 public:
+    using OnResizeCallback = void(*)(GLFWwindow*, int, int);
+
     // throws CreateGlWindowError
     GlWindow(std::string_view title, u32 width, u32 height, const GlWindowHints* hints = nullptr);
     virtual ~GlWindow() noexcept;
@@ -33,6 +35,7 @@ public:
     [[nodiscard]] auto height() const noexcept -> u32;
 
     auto make_context_current() const noexcept -> void;
+    auto set_resize_callback(OnResizeCallback callback) -> void;
     auto set_vsync(bool enabled) const noexcept -> void;
     auto fill_viewport() const noexcept -> void;
     auto set_viewport(GLint x, GLint y, GLsizei width, GLsizei height) const noexcept -> void;

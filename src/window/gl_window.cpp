@@ -101,21 +101,24 @@ auto GlWindow::size() const noexcept -> GlWindowSize
 
 auto GlWindow::width() const noexcept -> u32
 {
-    int width, height;
-    glfwGetWindowSize(_window, &width, &height);
-    return static_cast<u32>(width);
+    auto window_size = size();
+    return static_cast<u32>(window_size.width);
 }
 
 auto GlWindow::height() const noexcept -> u32
 {
-    int width, height;
-    glfwGetWindowSize(_window, &width, &height);
-    return static_cast<u32>(height);
+    auto window_size = size();
+    return static_cast<u32>(window_size.height);
 }
 
 auto GlWindow::make_context_current() const noexcept -> void
 {
     glfwMakeContextCurrent(_window);
+}
+
+auto GlWindow::set_resize_callback(OnResizeCallback callback) -> void
+{
+    glfwSetWindowSizeCallback(_window, callback);
 }
 
 auto GlWindow::set_vsync(bool enabled) const noexcept -> void
