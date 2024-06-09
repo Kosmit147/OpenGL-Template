@@ -1,12 +1,8 @@
 #pragma once
 
-static_assert(sizeof(glm::vec2) == sizeof(GLfloat) * 2);
-static_assert(sizeof(glm::vec3) == sizeof(GLfloat) * 3);
-static_assert(sizeof(glm::vec4) == sizeof(GLfloat) * 4);
-
 template<usize n> struct Anything
 {
-    template<typename T> inline operator T() const { return T{}; };
+    template<typename T> constexpr inline operator T() const { return T{}; };
 };
 
 template<typename T, usize... ints>
@@ -53,16 +49,19 @@ template<> constexpr inline auto get_attrib_specification<GLfloat>() -> AttribSp
 
 template<> constexpr inline auto get_attrib_specification<glm::vec2>() -> AttribSpecification
 {
+    static_assert(sizeof(glm::vec2) == sizeof(GLfloat) * 2);
     return { 2, GL_FLOAT };
 }
 
 template<> constexpr inline auto get_attrib_specification<glm::vec3>() -> AttribSpecification
 {
+    static_assert(sizeof(glm::vec3) == sizeof(GLfloat) * 3);
     return { 3, GL_FLOAT };
 }
 
 template<> constexpr inline auto get_attrib_specification<glm::vec4>() -> AttribSpecification
 {
+    static_assert(sizeof(glm::vec4) == sizeof(GLfloat) * 4);
     return { 4, GL_FLOAT };
 }
 
@@ -127,6 +126,16 @@ template<typename VertexType> inline auto bind_vertex_buffer_layout() noexcept -
         bind_vertex_buffer_attrib<decltype(f3)>(location, stride, offset);
         bind_vertex_buffer_attrib<decltype(f4)>(location, stride, offset);
         bind_vertex_buffer_attrib<decltype(f5)>(location, stride, offset);
+    }
+    else if constexpr (arity == 6)
+    {
+        [[maybe_unused]] auto& [f1, f2, f3, f4, f5, f6] = dummy;
+        bind_vertex_buffer_attrib<decltype(f1)>(location, stride, offset);
+        bind_vertex_buffer_attrib<decltype(f2)>(location, stride, offset);
+        bind_vertex_buffer_attrib<decltype(f3)>(location, stride, offset);
+        bind_vertex_buffer_attrib<decltype(f4)>(location, stride, offset);
+        bind_vertex_buffer_attrib<decltype(f5)>(location, stride, offset);
+        bind_vertex_buffer_attrib<decltype(f6)>(location, stride, offset);
     }
     else
     {

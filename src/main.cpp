@@ -54,7 +54,6 @@ int main()
     bind_vertex_buffer_layout<RectVertex>();
 
     Shader shader("shaders/basic.vert", "shaders/basic.frag");
-    GLint unif_loc = glGetUniformLocation(shader.id(), "time");
 
     while (!window.should_close())
     {
@@ -62,7 +61,7 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUniform1f(unif_loc, static_cast<GLfloat>(time));
+        shader.set_unif("time", static_cast<GLfloat>(time));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 
         window.swap_buffers();

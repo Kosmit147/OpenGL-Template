@@ -24,6 +24,8 @@ std::unordered_map<GLenum, const char*> Shader::_shader_type_to_str = {
 };
 
 Shader::Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src_path)
+    : _vertex_shader_src_file_path(vertex_src_path.string()),
+      _fragment_shader_src_file_path(fragment_src_path.string())
 {
     GLuint vertex_shader = invalid_shader_id;
     GLuint fragment_shader = invalid_shader_id;
@@ -41,8 +43,8 @@ Shader::Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src
         delete_shader_if_invalid(fragment_shader);
         delete_shader_program_if_invalid(shader_program);
 
-        log_error("Couldn't create shader from files: {}, {}", vertex_src_path.string(),
-                  fragment_src_path.string());
+        log_error("Couldn't create shader from files: {}, {}", _vertex_shader_src_file_path,
+                  _fragment_shader_src_file_path);
 
         throw;
     }
@@ -54,6 +56,28 @@ Shader::Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src
 
     _id = shader_program;
     bind();
+}
+
+auto Shader::get_unif_location(std::string_view name) const noexcept -> GLint
+{
+    GLint location;
+
+    if (auto search_res = _unif_cache.find(name); search_res != _unif_cache.end()) [[likely]]
+    {
+        location = search_res->second;
+    }
+    else [[unlikely]]
+    {
+        location = glGetUniformLocation(_id, name.data());
+
+        if (location == -1) [[unlikely]]
+            log_warning("Warning: Uniform {} in shader {} ({}, {}) doesn't exist!", name, _id,
+                        _vertex_shader_src_file_path, _fragment_shader_src_file_path);
+
+        _unif_cache[name] = location;
+    }
+
+    return location;
 }
 
 auto Shader::compile_shader(GLenum shader_type, const ShaderPath& shader_src_path) -> GLuint
