@@ -6,6 +6,7 @@
 #include "gl/shader.hpp"
 #include "gl/vertex_array.hpp"
 #include "gl/vertex_buffer.hpp"
+#include "gl/vertex_buffer_layout.hpp"
 #include "window/gl_window.hpp"
 
 static constexpr std::string_view window_title = "Example";
@@ -22,6 +23,7 @@ static constexpr GlWindowHints window_hints = {
 struct RectVertex
 {
     glm::vec2 position;
+    glm::vec4 color;
 };
 
 int main()
@@ -34,10 +36,10 @@ int main()
 
     // clang-format off
     RectVertex vertices[] = {
-        {{ -0.5f,  0.5f, }},
-        {{  0.5f,  0.5f, }},
-        {{  0.5f, -0.5f, }},
-        {{ -0.5f, -0.5f, }},
+        {{ -0.5f,  0.5f, }, { 0.0f, 1.0f, 1.0f, 1.0f }},
+        {{  0.5f,  0.5f, }, { 0.5f, 1.0f, 0.7f, 1.0f }},
+        {{  0.5f, -0.5f, }, { 1.0f, 1.0f, 0.0f, 1.0f }},
+        {{ -0.5f, -0.5f, }, { 1.0f, 0.0f, 1.0f, 1.0f }},
     };
 
     GLushort indices[] = {
@@ -49,9 +51,7 @@ int main()
     VertexArray va;
     VertexBuffer vb(std::span{ vertices }, GL_STATIC_DRAW);
     IndexBuffer ib(std::span{ indices }, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+    bind_vertex_buffer_layout<RectVertex>();
 
     Shader shader("shaders/basic.vert", "shaders/basic.frag");
     GLint unif_loc = glGetUniformLocation(shader.id(), "time");

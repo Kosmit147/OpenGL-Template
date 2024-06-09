@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <compare>
+#include <concepts>
 #include <numeric>
 #include <ranges>
 

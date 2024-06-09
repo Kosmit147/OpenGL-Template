@@ -38,3 +38,4 @@ out
 # Visual Studio
 .vs
 CMakeSettings.json
+CMakePresets.json
