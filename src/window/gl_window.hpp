@@ -51,26 +51,7 @@ private:
 
 class CreateGlWindowError : public std::runtime_error
 {
-protected:
+public:
     inline CreateGlWindowError(const char* message) noexcept : std::runtime_error(message) {}
     inline CreateGlWindowError(const std::string& message) noexcept : std::runtime_error(message) {}
-    virtual inline ~CreateGlWindowError() noexcept {}
-};
-
-class FailedToCreateGlWindow : public CreateGlWindowError
-{
-public:
-    inline FailedToCreateGlWindow() noexcept : CreateGlWindowError("Failed to create a window.") {}
-};
-
-class FailedToInitializeGlfw : public CreateGlWindowError
-{
-public:
-    inline FailedToInitializeGlfw() noexcept : CreateGlWindowError("Failed to initialize GLFW.") {}
-};
-
-class FailedToLoadGlad : public CreateGlWindowError
-{
-public:
-    inline FailedToLoadGlad() noexcept : CreateGlWindowError("Failed to load GLFW.") {}
 };

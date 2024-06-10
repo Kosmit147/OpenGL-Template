@@ -16,7 +16,7 @@ public:
     Shader(const Shader& other) = delete;
     Shader(Shader&& other) = delete;
 
-    inline auto bind() const noexcept -> void { glUseProgram(_id); }
+    inline auto use() const noexcept -> void { glUseProgram(_id); }
     [[nodiscard]] inline auto id() const noexcept -> GLuint { return _id; }
 
     [[nodiscard]] auto get_unif_location(std::string_view name) const noexcept -> GLint;
@@ -30,6 +30,12 @@ public:
     {
         GLint location = get_unif_location(name);
         glUniform1f(location, val);
+    }
+
+    template<> inline auto set_unif<GLint>(std::string_view name, GLint val) const noexcept -> void
+    {
+        GLint location = get_unif_location(name);
+        glUniform1i(location, val);
     }
 
 private:
@@ -48,29 +54,7 @@ private:
 
 class CreateShaderError : public std::runtime_error
 {
-protected:
+public:
     inline CreateShaderError(const char* message) noexcept : std::runtime_error(message) {}
     inline CreateShaderError(const std::string& message) noexcept : std::runtime_error(message) {}
-    virtual inline ~CreateShaderError() noexcept {}
-};
-
-class FailedToReadShaderSourceFile : public CreateShaderError
-{
-public:
-    inline FailedToReadShaderSourceFile(const char* message) noexcept : CreateShaderError(message) {}
-    inline FailedToReadShaderSourceFile(const std::string& message) noexcept : CreateShaderError(message) {}
-};
-
-class FailedToCompileShader : public CreateShaderError
-{
-public:
-    inline FailedToCompileShader(const char* message) noexcept : CreateShaderError(message) {}
-    inline FailedToCompileShader(const std::string& message) noexcept : CreateShaderError(message) {}
-};
-
-class FailedToLinkShader : public CreateShaderError
-{
-public:
-    inline FailedToLinkShader(const char* message) noexcept : CreateShaderError(message) {}
-    inline FailedToLinkShader(const std::string& message) noexcept : CreateShaderError(message) {}
 };

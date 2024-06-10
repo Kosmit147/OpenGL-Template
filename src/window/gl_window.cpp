@@ -38,8 +38,9 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
     {
         if (!init_glfw())
         {
-            log_error("Failed to initialize GLFW.");
-            throw FailedToInitializeGlfw{};
+            auto message = "Failed to initialize GLFW.";
+            log_error("{}", message);
+            throw CreateGlWindowError{ message };
         }
     }
 
@@ -58,8 +59,9 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
         if (_window_count == 0)
             terminate_glfw();
 
-        log_error("Failed to create a window.");
-        throw FailedToCreateGlWindow{};
+        auto message = "Failed to create a window.";
+        log_error("{}", message);
+        throw CreateGlWindowError{ message };
     }
 
     make_context_current();
@@ -69,8 +71,10 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
         if (!load_glad())
         {
             terminate_glfw();
-            log_error("Failed to load GLAD.");
-            throw FailedToLoadGlad{};
+
+            auto message = "Failed to load Glad.";
+            log_error("{}", message);
+            throw CreateGlWindowError{ message };
         }
     }
 

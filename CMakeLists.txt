@@ -15,6 +15,7 @@ set(PROJECT_SOURCES
     src/main.cpp
     src/io/file_io.cpp
     src/gl/shader.cpp
+    src/gl/texture.cpp
     src/window/gl_window.cpp
 )
 
