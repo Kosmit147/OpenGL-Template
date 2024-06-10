@@ -20,7 +20,9 @@ struct GlWindowSize
 class GlWindow
 {
 public:
-    using OnResizeCallback = void(*)(GLFWwindow*, int, int);
+    using GlDebugMessageCallback = void (*)(GLenum, GLenum, GLuint, GLenum, GLsizei, const GLchar*,
+                                            const void*);
+    using OnResizeCallback = void (*)(GLFWwindow*, int, int);
 
     // throws CreateGlWindowError
     GlWindow(std::string_view title, u32 width, u32 height, const GlWindowHints* hints = nullptr);
@@ -42,6 +44,10 @@ public:
 
     inline auto swap_buffers() const noexcept -> void { glfwSwapBuffers(_window); }
     inline auto poll_events() const noexcept -> void { glfwPollEvents(); }
+
+private:
+    static auto gl_debug_message_callback(GLenum, GLenum, GLuint, GLenum severity, GLsizei,
+                                          const GLchar* message, const void*) noexcept -> void;
 
 private:
     GLFWwindow* _window;

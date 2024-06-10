@@ -6,8 +6,8 @@
 
 struct Texture2DOptions
 {
-    GLint horizontal_wrap = GL_LINEAR;
-    GLint vertical_wrap = GL_LINEAR;
+    GLint horizontal_wrap = GL_REPEAT;
+    GLint vertical_wrap = GL_REPEAT;
     GLint min_filter = GL_LINEAR;
     GLint mag_filter = GL_LINEAR;
 
