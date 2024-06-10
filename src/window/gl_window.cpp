@@ -79,6 +79,11 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
     }
 
     fill_viewport();
+
+    // set some sensible defaults
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     _window_count++;
 }
 

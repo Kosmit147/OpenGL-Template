@@ -14,4 +14,5 @@ void main()
 	outColor = vec4(sin(time) / 2.0 + 0.5, 1.0, cos(time) / 2.0 + 0.5, 1.0);
 	outColor = mix(Color, outColor, 0.5);
 	outColor = mix(outColor, texColor, 0.5);
+	outColor.a = 1.0;
 }
