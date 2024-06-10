@@ -55,7 +55,7 @@ Shader::Shader(const ShaderPath& vertex_src_path, const ShaderPath& fragment_src
 #endif
 
     _id = shader_program;
-    bind();
+    use();
 }
 
 auto Shader::get_unif_location(std::string_view name) const noexcept -> GLint
@@ -84,7 +84,7 @@ auto Shader::compile_shader(GLenum shader_type, const ShaderPath& shader_src_pat
 {
     try
     {
-        std::stringstream src = read_from_file(shader_src_path);
+        auto src = read_from_file(shader_src_path);
         auto src_view = src.view();
         return compile_shader(shader_type, src_view);
     }
@@ -93,13 +93,13 @@ auto Shader::compile_shader(GLenum shader_type, const ShaderPath& shader_src_pat
         auto message =
             std::format("Can't read {} shader source file: {}", _shader_type_to_str[shader_type], e.what());
         log_error("{}", message);
-        throw FailedToReadShaderSourceFile{ message };
+        throw CreateShaderError{ message };
     }
 }
 
 auto Shader::compile_shader(GLenum shader_type, std::string_view shader_src) -> GLuint
 {
-    const char* src_ptr = shader_src.data();
+    auto src_ptr = shader_src.data();
     GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &src_ptr, NULL);
     glCompileShader(shader);
@@ -117,7 +117,7 @@ auto Shader::compile_shader(GLenum shader_type, std::string_view shader_src) -> 
         auto message =
             std::format("Can't compile {} shader: {}", _shader_type_to_str[shader_type], error_log.data());
         log_error("{}", message);
-        throw FailedToCompileShader{ message };
+        throw CreateShaderError{ message };
     }
 
     return shader;
@@ -142,7 +142,7 @@ auto Shader::link_shader(GLuint vertex_shader, GLuint fragment_shader) -> GLuint
 
         auto message = std::format("Can't link shader: {}", error_log.data());
         log_error("{}", message);
-        throw FailedToLinkShader{ message };
+        throw CreateShaderError{ message };
     }
 
     return shader_program;
