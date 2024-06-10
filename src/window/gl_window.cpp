@@ -80,6 +80,9 @@ GlWindow::GlWindow(std::string_view title, u32 width, u32 height, const GlWindow
 
     fill_viewport();
 
+    // enable error reporting
+    glDebugMessageCallback(GlWindow::gl_debug_message_callback, nullptr);
+
     // set some sensible defaults
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -145,4 +148,22 @@ auto GlWindow::fill_viewport() const noexcept -> void
 auto GlWindow::set_viewport(GLint x, GLint y, GLsizei width, GLsizei height) const noexcept -> void
 {
     glViewport(x, y, width, height);
+}
+
+auto GlWindow::gl_debug_message_callback(GLenum, GLenum, GLuint, GLenum severity, GLsizei,
+                                         const GLchar* message, const void*) noexcept -> void
+{
+    switch (severity)
+    {
+    case GL_DEBUG_SEVERITY_NOTIFICATION:
+        log_notification("[OpenGL Notification]: {}", message);
+        break;
+    case GL_DEBUG_SEVERITY_LOW:
+    case GL_DEBUG_SEVERITY_MEDIUM:
+        log_warning("[OpenGL Warning]: {}", message);
+        break;
+    case GL_DEBUG_SEVERITY_HIGH:
+        log_error("[OpenGL Error]: {}", message);
+        break;
+    }
 }
